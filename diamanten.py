@@ -33,8 +33,6 @@ def create_message():
 
     return '\n'.join([
         "German market (Tradegate) update (local time: %s) (nyse time: %s)  " % (now.astimezone(ger).strftime("%T"), now.astimezone(nyse).strftime("%T")),
-        "$%.2f (€%.2f @%.4f) (volume: %s)   " % (tg['last']*rate, tg['last'], rate, tg['stueck']),
-        "",
-        "Still trying to figure out how to post these on a regular basis, so this is posted in kinda random intervals"
+        "$%.2f (€%.2f @%.4f) (volume: %s)   " % (tg['last']*rate, tg['last'], rate, tg['stueck'])
     ])
 
