@@ -1,4 +1,3 @@
-from reddit_front import RedditFront
 from datetime import datetime
 import requests
 from xml.etree import ElementTree
@@ -39,11 +38,3 @@ def create_message():
         "Still trying to figure out how to post these on a regular basis, so this is posted in kinda random intervals"
     ])
 
-if __name__ == "__main__":
-    try:
-        message = create_message()
-        print(message)
-
-        RedditFront()#.postSuperstonkDaily(message)
-    except Exception as e:
-        print (str(e.__class__.__name__) + ": " + str(e))
