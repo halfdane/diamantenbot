@@ -45,7 +45,7 @@ def main(argv):
     reddit_front = RedditFront()
 
     while True:
-        if itsTimeToRun() or cron:
+        if itsTimeToRun():
             try:
                 message = diamanten.create_message()
                 print(message)
