@@ -6,7 +6,7 @@ fake_run: venv
 
 .PHONY: run
 run: venv
-	./venv/bin/python main.py
+	./venv/bin/python src/main.py
 
 venv: venv/touchfile
 
