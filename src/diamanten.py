@@ -1,6 +1,7 @@
 from datetime import datetime
 from pyquery import PyQuery as pq
 import pytz
+import logging
 
 
 def toFloat(input):
@@ -13,7 +14,8 @@ def getOnVistaInformation():
     vol = 0
     d = pq('https://www.onvista.de/aktien/GAMESTOP-CORP-Aktie-US36467W1099?notation=35395953')
 
-    for volumeElement in d('#exchangesLayer a[title!="Handelsplatz geschlossen"] span').items():
+    for volumeElement in d('#exchangesLayer a[title="Realtime"]').items():
+        logging.debug(volumeElement.text())
         a_volume = [int(s) for s in volumeElement.text().split() if s.isdigit()]
         vol += sum(a_volume)
 
@@ -47,4 +49,5 @@ def create_message():
 
 
 if __name__ == "__main__":
-    print(create_message())
+    logging.basicConfig(level=logging.INFO)
+    logging.info(create_message())
