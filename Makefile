@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 .PHONY: fake_run
 fake_run: venv
-	./venv/bin/python main.py -t
+	./venv/bin/python src/main.py -t
 
 .PHONY: run
 run: venv

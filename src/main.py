@@ -4,6 +4,7 @@ import sys, getopt
 import time
 import datetime
 import pytz
+import logging
 
 SECONDS_PER_MIN = 60
 ger = pytz.timezone('Europe/Berlin')
@@ -20,13 +21,13 @@ def itsTimeToRun():
     weekday = now.isoweekday() <= 5
 
     if not morning:
-        print("It's not in the morning")
+        logging.info("It's not in the morning")
 
     if not fifth_minute:
-        print("It's not in a 10 divisible minute")
+        logging.info("It's not in a 10 divisible minute")
 
     if not weekday:
-        print("It's the weekend")
+        logging.info("It's the weekend")
 
     return morning and fifth_minute and weekday
 
@@ -36,7 +37,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"t")
     except getopt.GetoptError:
-        print ('test.py [-t testrun]')
+        logging.error('test.py [-t testrun]')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-t':
@@ -48,15 +49,16 @@ def main(argv):
         if itsTimeToRun():
             try:
                 message = diamanten.create_message()
-                print(message)
+                logging.info(message)
 
                 if not test:
                     reddit_front.postSuperstonkDaily(message)
             except Exception as e:
-                print(str(e.__class__.__name__) + ": " + str(e))
+                logging.error(str(e.__class__.__name__) + ": " + str(e))
 
         time.sleep(SECONDS_PER_MIN)
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     main(sys.argv[1:])
