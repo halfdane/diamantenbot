@@ -10,26 +10,33 @@ SECONDS_PER_MIN = 60
 ger = pytz.timezone('Europe/Berlin')
 
 
-def itsTimeToRun():
+def its_time_to_run():
     # run every 5 minutes between 08:00 and 10:00 on weekdays
     start = datetime.time(8, 0)
     end = datetime.time(10, 0)
     now = datetime.datetime.now()
 
-    morning = start <= now.astimezone(ger).time() <= end
-    fifth_minute = now.minute % 10 == 0
+    too_early = now.astimezone(ger).time() < start
+    too_late = now.astimezone(ger).time() > end
+
+    rhythm_minute = now.minute % 10 == 0
     weekday = now.isoweekday() <= 5
 
-    if not morning:
-        logging.info("It's not in the morning")
+    logging.info("It's now %s", now)
 
-    if not fifth_minute:
-        logging.info("It's not in a 10 divisible minute")
+    if too_early:
+        logging.info("  Too early")
+
+    if too_late:
+        logging.info("  Too late")
+
+    if not rhythm_minute:
+        logging.info("  not a 10 divisible minute")
 
     if not weekday:
-        logging.info("It's the weekend")
+        logging.info("  It's the weekend")
 
-    return morning and fifth_minute and weekday
+    return not too_early and not too_late and rhythm_minute and weekday
 
 
 def main(argv):
@@ -46,7 +53,7 @@ def main(argv):
     reddit_front = RedditFront()
 
     while True:
-        if itsTimeToRun():
+        if its_time_to_run():
             try:
                 message = diamanten.create_message()
                 logging.info(message)
