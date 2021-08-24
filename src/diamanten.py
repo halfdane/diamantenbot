@@ -65,7 +65,7 @@ def create_message():
         "[TG](https://www.tradegate.de/orderbuch.php?isin=US36467W1099)+"
         "[LS-X](https://www.ls-x.de/de/aktie/gamestop-aktie)+"
         "[LS-TC](https://www.ls-tc.de/de/aktie/gamestop-aktie)+"
-        "[GETTEX](https://www.gettex.de/suche/?tx_indexedsearch%%5Bsword%%5D=GS2C))  " % (
+        "[GETTEX](https://www.gettex.de/suche/?tx_indexedsearch[sword]=GS2C))  " % (
             tg['price'] * rate, tg['price'], rate, tg['volume'])
     ])
 
