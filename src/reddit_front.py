@@ -18,10 +18,23 @@ class RedditFront:
         except Exception as e:
             logging.error("Failed to log in!")
 
-    def postSuperstonkDaily(self, message):
+    def post_superstonk_daily(self, message):
         subreddit = self.reddit.subreddit("Superstonk")
         expectedName = "$GME Daily Discussion Thread"
         for submission in subreddit.hot(limit=10):
             if (submission.title == expectedName):
                 submission.reply(message)
 
+    def find_diamantenhaende_post(self):
+        parsnip = self.reddit.redditor("parsnip")
+        for i in parsnip.submissions.new(limit=1):
+            print(i.title)
+            print(i.created_utc)
+            print(i.permalink)
+            return i.permalink
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    reddit_front = RedditFront()
+    reddit_front.find_diamantenhaende_post()

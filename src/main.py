@@ -51,15 +51,16 @@ def main(argv):
             test = True
 
     reddit_front = RedditFront()
+    diamantenhaende_post = reddit_front.find_diamantenhaende_post()
 
     while True:
         if its_time_to_run():
             try:
-                message = diamanten.create_message()
+                message = diamanten.create_message(None)
                 logging.info(message)
 
                 if not test:
-                    reddit_front.postSuperstonkDaily(message)
+                    reddit_front.post_superstonk_daily(message)
             except Exception as e:
                 logging.error(str(e.__class__.__name__) + ": " + str(e))
 
