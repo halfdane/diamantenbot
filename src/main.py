@@ -51,11 +51,11 @@ def main(argv):
             test = True
 
     reddit_front = RedditFront()
-    diamantenhaende_post = reddit_front.find_diamantenhaende_post()
 
     while True:
         if its_time_to_run() or test:
             try:
+                diamantenhaende_post = reddit_front.find_diamantenhaende_post()
                 message = diamanten.create_message(diamantenhaende_post)
                 logging.info(message)
 
