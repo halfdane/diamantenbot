@@ -1,6 +1,7 @@
 import praw
 import os
 import logging
+from datetime import datetime
 
 class RedditFront:
 
@@ -28,10 +29,12 @@ class RedditFront:
     def find_diamantenhaende_post(self):
         parsnip = self.reddit.redditor("parsnip")
         for i in parsnip.submissions.new(limit=1):
-            print(i.title)
-            print(i.created_utc)
-            print(i.permalink)
-            return i.permalink
+            link = "https://www.reddit.com%s" % i.permalink
+            
+            logging.info(i.title)
+            logging.info(datetime.utcfromtimestamp(i.created_utc))
+            logging.info(link)
+            return link
 
 
 if __name__ == "__main__":

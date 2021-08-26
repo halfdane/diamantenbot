@@ -54,9 +54,9 @@ def main(argv):
     diamantenhaende_post = reddit_front.find_diamantenhaende_post()
 
     while True:
-        if its_time_to_run():
+        if its_time_to_run() or test:
             try:
-                message = diamanten.create_message(None)
+                message = diamanten.create_message(diamantenhaende_post)
                 logging.info(message)
 
                 if not test:
