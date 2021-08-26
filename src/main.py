@@ -1,5 +1,7 @@
 from reddit_front import RedditFront
 import diamanten
+import comment
+
 import sys, getopt
 import time
 import datetime
@@ -56,7 +58,7 @@ def main(argv):
         if its_time_to_run() or test:
             try:
                 diamantenhaende_post = reddit_front.find_diamantenhaende_post()
-                message = diamanten.create_message(diamantenhaende_post)
+                message = comment.create_message(diamantenhaende_post, diamanten.get_diamanten_data())
                 logging.info(message)
 
                 if not test:
