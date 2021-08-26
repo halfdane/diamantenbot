@@ -62,7 +62,7 @@ def main(argv):
                 if not test:
                     reddit_front.post_superstonk_daily(message)
             except Exception as e:
-                logging.error(str(e.__class__.__name__) + ": " + str(e))
+                logging.error(str(e.__class__.__name__) + ": " + str(e), e)
 
         time.sleep(SECONDS_PER_MIN)
 

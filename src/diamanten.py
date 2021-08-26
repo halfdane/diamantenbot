@@ -5,12 +5,15 @@ import logging
 import re
 import requests
 
+def convert_int(s):
+    return int(s) if s and s.isdecimal() else 0
+
 
 def get_trade_gate_information():
     d = pq('https://www.tradegate.de/orderbuch.php?isin=US36467W1099')
     stueck__text = d('#stueck').text()
     stueck__text = re.sub('[^\d]', '', stueck__text)
-    v = int(stueck__text)
+    v = convert_int(stueck__text)
 
     vol = \
         get_gettex_volume() + \
@@ -30,7 +33,7 @@ def get_ls_volume(url):
         .filter(lambda i, this: re.match('[\d:]{8}.*?', pq(this).text())) \
         .parents('tr') \
         .find('[field="tradeSize"]').items()
-    return sum([int(i.text()) for i in lines if i.text().isdigit()])
+    return sum([convert_int(i.text()) for i in lines])
 
 
 def get_gettex_volume():
@@ -42,7 +45,7 @@ def get_gettex_volume():
     d = pq(r.json()["data"])
     volume = d('tbody tr:first td:last').text().replace('.', '')
 
-    return int(volume)
+    return convert_int(volume)
 
 
 def eur_to_usd():
@@ -72,11 +75,12 @@ def create_message(parsnip_url):
         "[LS-TC](https://www.ls-tc.de/de/aktie/gamestop-aktie)+",
         "[GETTEX](https://www.gettex.de/suche/?tx_indexedsearch[sword]=GS2C)",
         ")",
+        "  ",
         "  "
     ]
 
     if parsnip_url is not None:
-        message_parts.append(parsnip_url)
+        message_parts.append("[Visit the Diamantenhände post as well](%s)" % parsnip_url)
 
     return '\n'.join(message_parts)
 
