@@ -31,9 +31,7 @@ class RedditFront:
         for i in parsnip.submissions.new(limit=1):
             link = "https://www.reddit.com%s" % i.permalink
             
-            logging.info(i.title)
-            logging.info(datetime.utcfromtimestamp(i.created_utc))
-            logging.info(link)
+            logging.info("  %s [created (UTC) %s]" % (i.title, datetime.utcfromtimestamp(i.created_utc)))
             return link
 
 

@@ -58,11 +58,14 @@ def main(argv):
         if its_time_to_run() or test:
             try:
                 diamantenhaende_post = reddit_front.find_diamantenhaende_post()
-                message = comment.create_message(diamantenhaende_post, diamanten.get_diamanten_data())
-                logging.info(message)
+                diamanten_data = diamanten.get_diamanten_data()
+                message = comment.create_message(diamantenhaende_post, diamanten_data)
+                logging.info("\n%s" % message)
 
-                if not test:
-                    reddit_front.post_superstonk_daily(message)
+                if test:
+                    exit()
+
+                reddit_front.post_superstonk_daily(message)
             except Exception as e:
                 logging.error(str(e.__class__.__name__) + ": " + str(e), e)
 
