@@ -8,12 +8,15 @@ import requests
 def convert_int(s):
     return int(s) if s and s.isdecimal() else 0
 
+def convert_float(s):
+    return float(s) if s and s.isdecimal() else 0.0
+
 
 def get_trade_gate_information():
     d = pq('https://www.tradegate.de/orderbuch.php?isin=US36467W1099')
     stueck__text = d('#stueck').text()
     stueck__text = re.sub('[^\d]', '', stueck__text)
-    v = convert_int(stueck__text)
+    v = convert_float(stueck__text)
 
     return {
         'price': float(d('#last').text().replace(',', '.')),
