@@ -1,4 +1,5 @@
 from reddit_front import RedditFront
+from sleeper import Sleeper
 import diamanten
 import comment
 
@@ -44,7 +45,7 @@ def its_time_to_run():
 def main(argv):
     test = False
     try:
-        opts, args = getopt.getopt(argv,"t")
+        opts, args = getopt.getopt(argv, "t")
     except getopt.GetoptError:
         logging.error('test.py [-t testrun]')
         sys.exit(2)
@@ -53,23 +54,23 @@ def main(argv):
             test = True
 
     reddit_front = RedditFront()
+    sleeper = Sleeper(test)
 
     while True:
-        if its_time_to_run() or test:
-            try:
-                diamantenhaende_post = reddit_front.find_diamantenhaende_post()
-                diamanten_data = diamanten.get_diamanten_data()
-                message = comment.create_message(diamantenhaende_post, diamanten_data)
-                logging.info("\n%s" % message)
+        sleeper.wait_for_next_diamanten(datetime.datetime.now())
 
-                if test:
-                    exit()
+        try:
+            diamantenhaende_post = reddit_front.find_diamantenhaende_post()
+            diamanten_data = diamanten.get_diamanten_data()
+            message = comment.create_message(diamantenhaende_post, diamanten_data)
+            logging.info("\n%s" % message)
 
-                reddit_front.post_superstonk_daily(message)
-            except Exception as e:
-                logging.error(str(e.__class__.__name__) + ": " + str(e), e)
+            if test:
+                exit()
 
-        time.sleep(SECONDS_PER_MIN)
+            reddit_front.post_superstonk_daily(message)
+        except Exception as e:
+            logging.error(str(e.__class__.__name__) + ": " + str(e), e)
 
 
 if __name__ == "__main__":
