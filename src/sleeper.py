@@ -50,30 +50,33 @@ class Sleeper:
 
     def __next_weekday_market_open(self, now=datetime.datetime.now()):
         next_weekday = now + datetime.timedelta(days=7 - now.weekday() if now.weekday() > 3 else 1)
-        return next_weekday.replace(hour=self.market_open.hour, minute=0, second=0, microsecond=0)
+        return next_weekday.astimezone(ger).replace(hour=self.market_open.hour, minute=0, second=0, microsecond=0)
 
-    def __until(self, now_1, target_time):
+    def __until(self, now, target_time):
         end = target_time.timestamp()
 
         # Now we wait
         while True:
-            now = now_1 if self.test else datetime.datetime.now()
+            now = datetime.datetime.now() if not self.test else now
 
             self.__debug_datetime("It's now %s", now)
             diff = end - now.timestamp()
 
             # Time is up!
-            if diff <= 0:
+            if diff < 0:
                 break
+
+            # 'logarithmic' sleeping
+            half_diff = diff / 2
+            logging.info("%fs to go. Sleeping for %fs." % (diff, half_diff))
+            if not self.test:
+                time.sleep(half_diff)
             else:
-                # 'logarithmic' sleeping to minimize loop iterations
-                seconds = diff / 2 if diff / 2 > 1 else 1
-                logging.info("diff is %d sleeping for %d seconds" % (diff, seconds))
-                if self.test:
-                    now_1 = now_1 + datetime.timedelta(seconds=seconds)
-                    time.sleep(1)
-                else:
-                    time.sleep(seconds)
+                now = now + datetime.timedelta(seconds=half_diff)
+                time.sleep(half_diff if half_diff <= 1 else 1)
+
+            if diff <= 0.1:
+                break
 
     def __debug_datetime(self, string, dt):
         logging.info(string % dt.astimezone(ger).strftime(self.stftime))
@@ -81,5 +84,5 @@ class Sleeper:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    now = datetime.datetime(year=2021, month=9, day=6, hour=9, minute=57).astimezone(ger)
-    logging.info(Sleeper(True).wait_for_next_diamanten(now))
+    astimezone = datetime.datetime(year=2021, month=9, day=6, hour=9, minute=57)
+    logging.info(Sleeper(True).wait_for_next_diamanten(astimezone))

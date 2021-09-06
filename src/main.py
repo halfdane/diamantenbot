@@ -25,7 +25,7 @@ def main(argv):
     sleeper = Sleeper(test)
 
     while True:
-        sleeper.wait_for_next_diamanten(datetime.datetime.now())
+        sleeper.wait_for_next_diamanten()
 
         try:
             diamantenhaende_post = reddit_front.find_diamantenhaende_post()
