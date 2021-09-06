@@ -18,7 +18,7 @@ def create_message(parsnip_url, diamanten_data):
     rate = diamanten_data['euro2usd']
     price_eur = "€%.2f" % diamanten_data['price'] if diamanten_data['price'] > 0 else "n/a"
     price_usd = "$%.2f" % (diamanten_data['price'] * rate) if diamanten_data['price'] > 0 else "n/a"
-    collated_volume = '\n+ '.join(volume_desc)
+    collated_volume = ' + '.join(volume_desc)
 
     message_parts = [
         "German market update ",
