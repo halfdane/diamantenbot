@@ -15,7 +15,7 @@ ger = pytz.timezone('Europe/Berlin')
 def its_time_to_run():
     # run every 5 minutes between 08:00 and 10:00 on weekdays
     start = datetime.time(8, 0)
-    end = datetime.time(10, 0)
+    end = datetime.time(18, 0)
     now = datetime.datetime.now()
 
     too_early = now.astimezone(ger).time() < start
