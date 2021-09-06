@@ -8,8 +8,8 @@ ger = pytz.timezone('Europe/Berlin')
 
 class Sleeper:
     stftime = "%x %X"
-    market_open = datetime.time(8, 0)
-    market_close = datetime.time(10, 0)
+    market_open = datetime.time(hour=8, minute=0)
+    market_close = datetime.time(hour=17, minute=30)
 
     def __init__(self, test=False):
         self.test = test
