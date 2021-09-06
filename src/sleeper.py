@@ -36,7 +36,7 @@ class Sleeper:
         # if it's market time, sleep until the next tenth minute
         elif not_tenth_minute:
             tenth_minute = now.minute - (now.minute % 10) + 10
-            sleep_until = now.replace(minute=tenth_minute % 60)
+            sleep_until = now.replace(minute=tenth_minute % 60, second=0)
 
             if tenth_minute >= 60:
                 sleep_until = sleep_until.replace(hour=sleep_until.hour + 1)
