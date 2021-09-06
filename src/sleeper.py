@@ -58,7 +58,7 @@ class Sleeper:
         # Now we wait
         while True:
             logging.info("It's now %s" % now_1.strftime(self.stftime))
-            diff = end - now_1.timestamp()
+            diff = end - datetime.datetime.now().timestamp()
 
             # Time is up!
             if diff <= 0:
