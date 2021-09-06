@@ -40,7 +40,8 @@ def main(argv):
         except Exception as e:
             logging.error(str(e.__class__.__name__) + ": " + str(e), e)
 
-        time.sleep(60)
+        logging.info("Cooling down for a minute")
+        time.sleep(61)
 
 
 if __name__ == "__main__":
