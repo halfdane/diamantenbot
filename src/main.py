@@ -1,3 +1,5 @@
+import time
+
 from reddit_front import RedditFront
 from sleeper import Sleeper
 import diamanten
@@ -37,6 +39,8 @@ def main(argv):
             reddit_front.post_superstonk_daily(message)
         except Exception as e:
             logging.error(str(e.__class__.__name__) + ": " + str(e), e)
+
+        time.sleep(60)
 
 
 if __name__ == "__main__":
