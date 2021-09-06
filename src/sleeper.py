@@ -15,7 +15,7 @@ class Sleeper:
         self.test = test
 
     def wait_for_next_diamanten(self, now=datetime.datetime.now()):
-        logging.info("It's now %s" % now.strftime(self.stftime))
+        self.__debug_datetime("It's now %s", now)
 
         too_early = now.astimezone(ger).time() < self.market_open
         too_late = now.astimezone(ger).time() > self.market_close
@@ -26,12 +26,12 @@ class Sleeper:
         # market opens at 08:00 on the next weekday
         if too_late:
             sleep_until = self.__next_weekday_market_open(now)
-            logging.info("it's too late. Sleeping until %s" % sleep_until.strftime(self.stftime))
+            self.__debug_datetime("it's too late. Sleeping until %s", sleep_until)
 
         # if it's too early, sleep until market opens
         elif too_early:
             sleep_until = self.__next_weekday_market_open(now - datetime.timedelta(days=1))
-            logging.info("it's too early. Sleeping until %s" % sleep_until.strftime(self.stftime))
+            self.__debug_datetime("it's too early. Sleeping until %s", sleep_until)
 
         # if it's market time, sleep until the next tenth minute
         elif not_tenth_minute:
@@ -41,7 +41,7 @@ class Sleeper:
             if tenth_minute >= 60:
                 sleep_until = sleep_until.replace(hour=sleep_until.hour + 1)
 
-            logging.info("Not a tenth minute. Sleeping until %s" % sleep_until.strftime(self.stftime))
+            self.__debug_datetime("Not a tenth minute. Sleeping until %s", sleep_until)
 
         if sleep_until is not None:
             self.__until(now, sleep_until)
@@ -59,7 +59,7 @@ class Sleeper:
         while True:
             now = now_1 if self.test else datetime.datetime.now()
 
-            logging.info("It's now %s" % now.strftime(self.stftime))
+            self.__debug_datetime("It's now %s", now)
             diff = end - now.timestamp()
 
             # Time is up!
@@ -74,6 +74,9 @@ class Sleeper:
                     time.sleep(1)
                 else:
                     time.sleep(seconds)
+
+    def __debug_datetime(self, string, dt):
+        logging.info(string % dt.astimezone(ger).strftime(self.stftime))
 
 
 if __name__ == "__main__":
