@@ -21,7 +21,7 @@ def main(argv):
         if opt == '-t':
             test = True
 
-    reddit_front = RedditFront()
+    reddit_front = RedditFront(test)
     sleeper = Sleeper(test)
 
     while True:
@@ -32,9 +32,6 @@ def main(argv):
             diamanten_data = diamanten.get_diamanten_data()
             message = comment.create_message(diamantenhaende_post, diamanten_data)
             logging.info("\n%s" % message)
-
-            if test:
-                exit()
 
             reddit_front.post_superstonk_daily(message)
         except Exception as e:

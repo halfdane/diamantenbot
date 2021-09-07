@@ -5,7 +5,7 @@ from datetime import datetime
 
 class RedditFront:
 
-    def __init__(self):
+    def __init__(self, test=False):
         user_agent = "desktop:com.halfdane.diamanten_bot:v0.0.1 (by u/half_dane)"
         logging.debug("Logging in..")
         try:
@@ -18,6 +18,7 @@ class RedditFront:
             logging.info("Logged in!")
         except Exception as e:
             logging.error("Failed to log in!")
+        self.test = test
 
     def post_superstonk_daily(self, message):
         subreddit = self.reddit.subreddit("Superstonk")
@@ -25,7 +26,8 @@ class RedditFront:
         for submission in subreddit.hot(limit=10):
             if (submission.title == expectedName):
                 logging.info("Commenting to https://www.reddit.com%s" % submission.permalink)
-                submission.reply(message)
+                if not self.test:
+                    submission.reply(message)
 
     def find_diamantenhaende_post(self):
         parsnip = self.reddit.redditor("parsnip")
