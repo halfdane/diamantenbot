@@ -24,7 +24,7 @@ class RedditFront:
         expectedName = "$GME Daily Discussion Thread"
         for submission in subreddit.hot(limit=10):
             if (submission.title == expectedName):
-                logging.info("Commenting to https://www.reddit.com%s" % submission.limit)
+                logging.info("Commenting to https://www.reddit.com%s" % submission.permalink)
                 submission.reply(message)
 
     def find_diamantenhaende_post(self):
