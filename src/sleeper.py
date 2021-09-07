@@ -11,8 +11,6 @@ class Sleeper:
     market_open = datetime.time(hour=8, minute=0)
     market_close = datetime.time(hour=17, minute=00)
 
-    def __init__(self):
-
     def wait_for_next_diamanten(self, now=datetime.datetime.now()):
         self.__debug_datetime("It's now %s", now)
 
