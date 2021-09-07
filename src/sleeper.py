@@ -11,7 +11,9 @@ class Sleeper:
     market_open = datetime.time(hour=8, minute=0)
     market_close = datetime.time(hour=17, minute=00)
 
-    def wait_for_next_diamanten(self, now=datetime.datetime.now()):
+    def wait_for_next_diamanten(self, timestamp=None):
+        now = datetime.datetime.now() if timestamp is None else timestamp
+
         self.__debug_datetime("It's now %s", now)
 
         too_early = now.astimezone(ger).time() < self.market_open
