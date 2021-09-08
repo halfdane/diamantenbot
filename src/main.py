@@ -21,8 +21,8 @@ def main(argv):
         if opt == '-t':
             test = True
 
-    reddit_front = RedditFront(True)
-    sleeper = Sleeper()
+    reddit_front = RedditFront(test)
+    sleeper = Sleeper(test)
 
     while True:
         sleeper.wait_for_next_diamanten()

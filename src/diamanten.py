@@ -19,7 +19,7 @@ def get_trade_gate_information():
     v = convert_float(stueck__text)
 
     return {
-        'price': float(d('#last').text().replace(',', '.')),
+        'price': convert_float(d('#last').text().replace(',', '.')),
         'volume': v
     }
 

@@ -9,7 +9,10 @@ ger = pytz.timezone('Europe/Berlin')
 class Sleeper:
     stftime = "%x %X"
     market_open = datetime.time(hour=8, minute=0)
-    market_close = datetime.time(hour=17, minute=00)
+    market_close = datetime.time(hour=10, minute=00)
+
+    def __init__(self, test=False):
+        self.test = test
 
     def wait_for_next_diamanten(self, timestamp=None):
         now = datetime.datetime.now() if timestamp is None else timestamp
@@ -56,7 +59,7 @@ class Sleeper:
 
         # Now we wait
         while True:
-            now = datetime.datetime.now()
+            now = datetime.datetime.now() if not self.test else now
 
             self.__debug_datetime("It's now %s", now)
             diff = end - now.timestamp()
@@ -69,7 +72,11 @@ class Sleeper:
             # 'logarithmic' sleeping
             half_diff = diff / 2
             logging.info("%fs to go. Sleeping for %fs." % (diff, half_diff))
-            time.sleep(half_diff)
+            if not self.test:
+                time.sleep(half_diff)
+            else:
+                now = now + datetime.timedelta(seconds=half_diff)
+                time.sleep(half_diff if half_diff <= 1 else 1)
 
             if diff <= 0.1:
                 logging.info("The difference is %f" % diff)
