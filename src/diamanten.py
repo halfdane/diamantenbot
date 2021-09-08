@@ -8,8 +8,12 @@ import requests
 def convert_int(s):
     return int(s) if s and s.isdecimal() else 0
 
+
 def convert_float(s):
-    return float(s) if s and s.isdecimal() else 0.0
+    try:
+        return float(s)
+    except ValueError:
+        return 0.0
 
 
 def get_trade_gate_information():
@@ -17,9 +21,9 @@ def get_trade_gate_information():
     stueck__text = d('#stueck').text()
     stueck__text = re.sub('[^\d]', '', stueck__text)
     v = convert_float(stueck__text)
-
+    last_in_float = d('#last').text().replace(',', '.')
     return {
-        'price': convert_float(d('#last').text().replace(',', '.')),
+        'price': convert_float(last_in_float),
         'volume': v
     }
 
@@ -86,4 +90,4 @@ def get_diamanten_data():
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    logging.info(get_diamanten_data())
+    logging.info(get_trade_gate_information())
