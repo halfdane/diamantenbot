@@ -61,7 +61,7 @@ class Sleeper:
         while True:
             now = datetime.datetime.now() if not self.test else now
 
-            self.__debug_datetime("It's now %s", now)
+            self.__debug_datetime("It's now %s", now, logging.info)
             diff = end - now.timestamp()
 
             # Time is up!
@@ -71,7 +71,7 @@ class Sleeper:
 
             # 'logarithmic' sleeping
             half_diff = diff / 2
-            logging.info("%fs to go. Sleeping for %fs." % (diff, half_diff))
+            logging.debug("%fs to go. Sleeping for %fs." % (diff, half_diff))
             if not self.test:
                 time.sleep(half_diff)
             else:
@@ -79,11 +79,11 @@ class Sleeper:
                 time.sleep(half_diff if half_diff <= 1 else 1)
 
             if diff <= 0.1:
-                logging.info("The difference is %f" % diff)
+                logging.debug("The difference is %f" % diff)
                 break
 
-    def __debug_datetime(self, string, dt):
-        logging.info(string % dt.astimezone(ger).strftime(self.stftime))
+    def __debug_datetime(self, string, dt, logfunction=logging.debug):
+        logfunction(string % dt.astimezone(ger).strftime(self.stftime))
 
 
 if __name__ == "__main__":
