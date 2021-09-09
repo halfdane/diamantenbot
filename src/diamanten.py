@@ -12,7 +12,9 @@ def convert_int(s):
 def convert_float(s):
     try:
         return float(s)
-    except ValueError:
+    except ValueError as e:
+        logging.error("That's not a float: %s" % s)
+        logging.error(e)
         return 0.0
 
 
