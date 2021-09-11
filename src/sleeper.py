@@ -57,11 +57,14 @@ class Sleeper:
     def __until(self, now, target_time):
         end = target_time.timestamp()
 
+        self.__debug_datetime("Not doing much until %s", target_time, logging.info)
+        self.__debug_datetime("It's now %s", now, logging.info)
+
         # Now we wait
         while True:
             now = datetime.datetime.now() if not self.test else now
 
-            self.__debug_datetime("It's now %s", now, logging.info)
+            self.__debug_datetime("It's now %s", now)
             diff = end - now.timestamp()
 
             # Time is up!
