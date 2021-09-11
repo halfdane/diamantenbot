@@ -19,14 +19,19 @@ class Sleeper:
 
         self.__debug_datetime("It's now %s", now)
 
+        no_tradingday = now.astimezone(ger).now.weekday() > 4
         too_early = now.astimezone(ger).time() < self.market_open
         too_late = now.astimezone(ger).time() > self.market_close
         not_tenth_minute = now.minute % 10 != 0
         sleep_until = None
 
+        if no_tradingday:
+            sleep_until = self.__next_weekday_market_open(now)
+            self.__debug_datetime("it's not a tradingday. Sleeping until %s", sleep_until, logging.info)
+
         # if it's too late, whatever time it is:
         # market opens at 08:00 on the next weekday
-        if too_late:
+        elif too_late:
             sleep_until = self.__next_weekday_market_open(now)
             self.__debug_datetime("it's too late. Sleeping until %s", sleep_until, logging.info)
 
@@ -50,7 +55,7 @@ class Sleeper:
 
         logging.info("It's time")
 
-    def next_weekday_market_open(self, timestamp=None):
+    def __next_weekday_market_open(self, timestamp=None):
         now = datetime.datetime.now() if timestamp is None else timestamp
         next_weekday = now + datetime.timedelta(days=7 - now.weekday() if now.weekday() > 3 else 1)
         return next_weekday.astimezone(ger).replace(hour=self.market_open.hour, minute=0, second=0, microsecond=0)
@@ -93,4 +98,4 @@ class Sleeper:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     astimezone = datetime.datetime(year=2021, month=9, day=6, hour=9, minute=57)
-    logging.info(Sleeper(True).next_weekday_market_open())
+    logging.info(Sleeper(True).wait_for_next_diamanten(astimezone))
