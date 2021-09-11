@@ -19,7 +19,7 @@ class Sleeper:
 
         self.__debug_datetime("It's now %s", now)
 
-        no_tradingday = now.astimezone(ger).now.weekday() > 4
+        no_tradingday = now.astimezone(ger).weekday() > 4
         too_early = now.astimezone(ger).time() < self.market_open
         too_late = now.astimezone(ger).time() > self.market_close
         not_tenth_minute = now.minute % 10 != 0
